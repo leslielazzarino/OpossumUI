@@ -6,7 +6,7 @@
 import { act, screen } from '@testing-library/react';
 import React from 'react';
 import {
-  AttributionIdWithCount,
+  AggregatedData,
   Attributions,
   ExternalAttributionSources,
 } from '../../../../shared/shared-types';
@@ -24,7 +24,7 @@ import { getParsedInputFileEnrichedWithTestData } from '../../../test-helpers/ge
 describe('The PackagePanel', () => {
   it('renders TextBoxes with right content', () => {
     const testSource = { name: 'HC', documentConfidence: 1 };
-    const testAttributionIds: Array<AttributionIdWithCount> = [
+    const testAttributionIds: Array<AggregatedData> = [
       { attributionId: 'uuid1' },
       { attributionId: 'uuid2' },
       { attributionId: 'uuid3' },
@@ -65,7 +65,7 @@ describe('The PackagePanel', () => {
   });
 
   it('groups by source and prettifies known sources', () => {
-    const testAttributionIds: Array<AttributionIdWithCount> = [
+    const testAttributionIds: Array<AggregatedData> = [
       { attributionId: 'uuid1' },
       { attributionId: 'uuid2' },
       { attributionId: 'uuid3' },

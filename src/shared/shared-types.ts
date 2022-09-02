@@ -46,7 +46,7 @@ export interface Source {
   documentConfidence: number;
 }
 
-export interface AttributionIdWithCount {
+export interface AggregatedData {
   attributionId: string;
   childrenWithAttributionCount?: number;
 }

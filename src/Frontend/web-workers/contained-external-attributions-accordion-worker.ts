@@ -4,13 +4,11 @@
 
 import { AttributionData } from '../../shared/shared-types';
 import { getContainedExternalPackages } from '../util/get-contained-packages';
-import { AttributionIdsWithCountAndResourceId } from '../types/types';
+import { AccordionState } from '../Components/AggregatedAttributionsPanel/WorkerAccordionPanel';
 
 let cachedExternalData: AttributionData | null = null;
 
-self.onmessage = ({
-  data: { selectedResourceId, externalData, resolvedExternalAttributions },
-}): void => {
+self.onmessage = ({ data: { selectedResourceId, externalData } }): void => {
   // externalData = null is used to empty the cached data
   if (externalData !== undefined) {
     cachedExternalData = externalData;
@@ -18,14 +16,13 @@ self.onmessage = ({
 
   if (selectedResourceId) {
     if (cachedExternalData) {
-      const attributionIdsWithCount = getContainedExternalPackages({
+      const load = getContainedExternalPackages({
         selectedResourceId,
         externalData: cachedExternalData,
-        resolvedExternalAttributions,
       });
-      const output: AttributionIdsWithCountAndResourceId = {
+      const output: AccordionState = {
         resourceId: selectedResourceId,
-        attributionIdsWithCount,
+        load,
       };
 
       self.postMessage({

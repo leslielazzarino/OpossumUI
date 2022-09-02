@@ -3,17 +3,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { ReactElement } from 'react';
-import {
-  AttributionIdWithCount,
-  Attributions,
-} from '../../../shared/shared-types';
+import { AggregatedData, Attributions } from '../../../shared/shared-types';
 import { AccordionPanel } from './AccordionPanel';
 import { PackagePanelTitle } from '../../enums/enums';
 import { PanelData } from '../../types/types';
 
 interface SyncAccordionPanelProps {
   title: PackagePanelTitle;
-  getAttributionIdsWithCount(): Array<AttributionIdWithCount>;
+  getAttributionIdsWithCount(): Array<AggregatedData>;
   attributions: Attributions;
   isAddToPackageEnabled: boolean;
 }
@@ -22,8 +19,7 @@ export function SyncAccordionPanel(
   props: SyncAccordionPanelProps
 ): ReactElement {
   const panelData: PanelData = {
-    title: props.title,
-    attributionIdsWithCount: props.getAttributionIdsWithCount(),
+    aggregatedData: props.getAttributionIdsWithCount(),
     attributions: props.attributions,
   };
 

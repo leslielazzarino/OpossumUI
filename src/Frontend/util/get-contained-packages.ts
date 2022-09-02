@@ -4,7 +4,7 @@
 
 import {
   AttributionData,
-  AttributionIdWithCount,
+  AggregatedData,
   Attributions,
   PackageInfo,
   ResourcesToAttributions,
@@ -13,7 +13,7 @@ import { getAttributedChildren } from './get-attributed-children';
 
 export function getExternalAttributionIdsWithCount(
   attributionIds: Array<string>
-): Array<AttributionIdWithCount> {
+): Array<AggregatedData> {
   return attributionIds.map((attributionId) => ({
     attributionId,
   }));
@@ -22,8 +22,7 @@ export function getExternalAttributionIdsWithCount(
 export function getContainedExternalPackages(args: {
   selectedResourceId: string;
   externalData: AttributionData;
-  resolvedExternalAttributions: Set<string>;
-}): Array<AttributionIdWithCount> {
+}): Array<AggregatedData> {
   const externalAttributedChildren = getAttributedChildren(
     args.externalData.resourcesWithAttributedChildren,
     args.selectedResourceId
@@ -33,14 +32,14 @@ export function getContainedExternalPackages(args: {
     args.externalData.attributions,
     args.externalData.resourcesToAttributions,
     externalAttributedChildren,
-    args.resolvedExternalAttributions
+    new Set()
   );
 }
 
 export function getContainedManualPackages(args: {
   selectedResourceId: string;
   manualData: AttributionData;
-}): Array<AttributionIdWithCount> {
+}): Array<AggregatedData> {
   const manualAttributedChildren = getAttributedChildren(
     args.manualData.resourcesWithAttributedChildren,
     args.selectedResourceId
@@ -59,7 +58,7 @@ export function computeAggregatedAttributionsFromChildren(
   resourcesToAttributions: ResourcesToAttributions,
   attributedChildren: Set<string>,
   resolvedExternalAttributions?: Set<string>
-): Array<AttributionIdWithCount> {
+): Array<AggregatedData> {
   const attributionCount: { [attributionId: string]: number } = {};
   attributedChildren.forEach((child: string) => {
     resourcesToAttributions[child].forEach((attributionId: string) => {
@@ -82,10 +81,7 @@ export function computeAggregatedAttributionsFromChildren(
 }
 
 export function sortByCountAndPackageName(attributions: Attributions) {
-  return function (
-    a1: AttributionIdWithCount,
-    a2: AttributionIdWithCount
-  ): number {
+  return function (a1: AggregatedData, a2: AggregatedData): number {
     if (
       a1.childrenWithAttributionCount &&
       a2.childrenWithAttributionCount &&

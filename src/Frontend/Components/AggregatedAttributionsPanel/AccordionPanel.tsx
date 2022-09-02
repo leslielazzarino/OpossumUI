@@ -8,9 +8,10 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiTypography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { ReactElement, useMemo, useState } from 'react';
-import { AttributionIdWithCount } from '../../../shared/shared-types';
+import { AggregatedData } from '../../../shared/shared-types';
 import { PackagePanel } from '../PackagePanel/PackagePanel';
 import { PanelData } from '../../types/types';
+import { PackagePanelTitle } from '../../enums/enums';
 
 const classes = {
   expansionPanelExpanded: {
@@ -37,15 +38,15 @@ const classes = {
 
 interface AccordionPanelProps {
   panelData: PanelData;
-  isAddToPackageEnabled: boolean;
+  isAddToPackageEnabled?: boolean;
 }
 
 export function AccordionPanel(props: AccordionPanelProps): ReactElement {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   useMemo(() => {
-    setExpanded(props.panelData.attributionIdsWithCount?.length > 0);
-  }, [props.panelData.attributionIdsWithCount]);
+    setExpanded(props.panelData.aggregatedData?.length > 0);
+  }, [props.panelData.aggregatedData]);
 
   function handleExpansionChange(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,10 +64,10 @@ export function AccordionPanel(props: AccordionPanelProps): ReactElement {
       }}
       elevation={0}
       square={true}
-      key={`PackagePanel-${props.panelData.title}`}
+      key={`PackagePanel-${PackagePanelTitle.ContainedManualPackages}`}
       expanded={expanded}
       onChange={handleExpansionChange}
-      disabled={isDisabled(props.panelData.attributionIdsWithCount)}
+      disabled={isDisabled(props.panelData.aggregatedData)}
     >
       <MuiAccordionSummary
         sx={{
@@ -74,7 +75,9 @@ export function AccordionPanel(props: AccordionPanelProps): ReactElement {
         }}
         expandIcon={<ExpandMoreIcon />}
       >
-        <MuiTypography>{props.panelData.title}</MuiTypography>
+        <MuiTypography>
+          {PackagePanelTitle.ContainedManualPackages}
+        </MuiTypography>
       </MuiAccordionSummary>
       <MuiAccordionDetails
         sx={{
@@ -82,19 +85,17 @@ export function AccordionPanel(props: AccordionPanelProps): ReactElement {
         }}
       >
         <PackagePanel
-          title={props.panelData.title}
-          attributionIdsWithCount={props.panelData.attributionIdsWithCount}
+          title={PackagePanelTitle.ContainedManualPackages}
+          attributionIdsWithCount={props.panelData.aggregatedData}
           attributions={props.panelData.attributions}
-          isAddToPackageEnabled={props.isAddToPackageEnabled}
+          isAddToPackageEnabled={props.isAddToPackageEnabled || false}
         />
       </MuiAccordionDetails>
     </MuiAccordion>
   );
 }
 
-function isDisabled(
-  attributionIdsWithCount: Array<AttributionIdWithCount>
-): boolean {
+function isDisabled(attributionIdsWithCount: Array<AggregatedData>): boolean {
   return (
     attributionIdsWithCount === undefined ||
     (attributionIdsWithCount && attributionIdsWithCount?.length === 0)

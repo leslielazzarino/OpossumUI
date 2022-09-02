@@ -2,12 +2,11 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-import { ResourceDetailsTabsWorkers } from '../get-new-accordion-workers';
+import { AccordionWorkers } from '../get-new-accordion-workers';
 
-export function getNewAccordionWorkers(): ResourceDetailsTabsWorkers {
+export function getNewAccordionWorkers(): AccordionWorkers {
   return {
-    containedExternalAttributionsAccordionWorker:
-      getNewContainedExternalAttributionsAccordionWorker(),
+    AccordionWorker: getNewContainedExternalAttributionsAccordionWorker(),
     containedManualAttributionsAccordionWorker:
       getNewContainedManualAttributionsAccordionWorker(),
   };

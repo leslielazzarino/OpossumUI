@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-  AttributionIdWithCount,
+  AggregatedData,
   Attributions,
   ExternalAttributionSources,
 } from '../../../../shared/shared-types';
@@ -28,7 +28,7 @@ const testAttributionSources: ExternalAttributionSources = {
 };
 
 describe('PackagePanel helpers', () => {
-  const testAttributionIds: Array<AttributionIdWithCount> = [
+  const testAttributionIds: Array<AggregatedData> = [
     { attributionId: 'jquery' },
     { attributionId: 'b_unknown', childrenWithAttributionCount: 5 },
     { attributionId: 'react', childrenWithAttributionCount: 5 },
@@ -89,13 +89,12 @@ describe('PackagePanel helpers', () => {
 
   it('getAttributionIdsWithCountForSource returns attributionIdsWithCountForSource', () => {
     const sourceName = 'MERGER';
-    const expectedAttributionIdsWithCountForSource: Array<AttributionIdWithCount> =
-      [
-        {
-          attributionId: 'react',
-          childrenWithAttributionCount: 5,
-        },
-      ];
+    const expectedAttributionIdsWithCountForSource: Array<AggregatedData> = [
+      {
+        attributionId: 'react',
+        childrenWithAttributionCount: 5,
+      },
+    ];
     expect(
       getAttributionIdsWithCountForSource(
         testAttributionIds,

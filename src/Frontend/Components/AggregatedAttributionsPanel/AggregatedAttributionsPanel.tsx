@@ -16,7 +16,7 @@ import {
   getSelectedResourceId,
 } from '../../state/selectors/audit-view-resource-selectors';
 import { isIdOfResourceWithChildren } from '../../util/can-resource-have-children';
-import { AttributionIdWithCount } from '../../../shared/shared-types';
+import { AggregatedData } from '../../../shared/shared-types';
 import { SyncAccordionPanel } from './SyncAccordionPanel';
 import {
   getContainedExternalPackages,
@@ -76,7 +76,7 @@ export function AggregatedAttributionsPanel(
     <>
       <SyncAccordionPanel
         title={PackagePanelTitle.ExternalPackages}
-        getAttributionIdsWithCount={(): Array<AttributionIdWithCount> =>
+        getAttributionIdsWithCount={(): Array<AggregatedData> =>
           getExternalAttributionIdsWithCount(
             externalData.resourcesToAttributions[selectedResourceId] || []
           )
@@ -87,19 +87,15 @@ export function AggregatedAttributionsPanel(
       {isIdOfResourceWithChildren(selectedResourceId) ? (
         <>
           <WorkerAccordionPanel
-            title={PackagePanelTitle.ContainedExternalPackages}
             workerArgs={containedExternalPackagesWorkerArgs}
             syncFallbackArgs={containedExternalPackagesSyncFallbackArgs}
-            getAttributionIdsWithCount={getContainedExternalPackages}
+            getExpensiveCalculation={getContainedExternalPackages}
             attributions={externalData.attributions}
-            isAddToPackageEnabled={props.isAddToPackageEnabled}
           />
           <WorkerAccordionPanel
-            title={PackagePanelTitle.ContainedManualPackages}
             workerArgs={containedManualPackagesWorkerArgs}
-            getAttributionIdsWithCount={getContainedManualPackages}
+            getExpensiveCalculation={getContainedManualPackages}
             attributions={manualData.attributions}
-            isAddToPackageEnabled={props.isAddToPackageEnabled}
           />
         </>
       ) : null}

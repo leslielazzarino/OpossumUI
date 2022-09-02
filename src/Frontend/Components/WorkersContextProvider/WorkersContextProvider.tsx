@@ -15,11 +15,9 @@ import {
 import { getNewAccordionWorkers } from '../../web-workers/get-new-accordion-workers';
 import { getNewFolderProgressBarWorker } from '../../web-workers/get-new-folder-progress-bar-worker';
 
-const resourceDetailsTabsWorkers = getNewAccordionWorkers();
+const accordionWorkers = getNewAccordionWorkers();
 
-export const AccordionWorkersContext = React.createContext(
-  resourceDetailsTabsWorkers
-);
+export const AccordionWorkersContext = React.createContext(accordionWorkers);
 
 export const AccordionWorkersContextProvider: FC<{
   children: ReactNode | null;
@@ -28,18 +26,16 @@ export const AccordionWorkersContextProvider: FC<{
   useMemo(() => {
     try {
       // remove data from previous file or empty data from app just opened
-      resourceDetailsTabsWorkers.containedExternalAttributionsAccordionWorker.postMessage(
-        { externalData: null }
-      );
-      resourceDetailsTabsWorkers.containedExternalAttributionsAccordionWorker.postMessage(
-        { externalData }
-      );
+      accordionWorkers.AccordionWorker.postMessage({
+        externalData: null,
+      });
+      accordionWorkers.AccordionWorker.postMessage({ externalData });
     } catch (error) {
       console.info('Web worker error in workers context provider: ', error);
     }
   }, [externalData]);
   return (
-    <AccordionWorkersContext.Provider value={resourceDetailsTabsWorkers}>
+    <AccordionWorkersContext.Provider value={accordionWorkers}>
       {children}
     </AccordionWorkersContext.Provider>
   );

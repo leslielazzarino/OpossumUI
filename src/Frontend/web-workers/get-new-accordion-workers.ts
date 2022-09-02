@@ -2,15 +2,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-export interface ResourceDetailsTabsWorkers {
-  containedExternalAttributionsAccordionWorker: Worker;
+export interface AccordionWorkers {
+  AccordionWorker: Worker;
   containedManualAttributionsAccordionWorker: Worker;
 }
 
-export function getNewAccordionWorkers(): ResourceDetailsTabsWorkers {
+export function getNewAccordionWorkers(): AccordionWorkers {
   return {
-    containedExternalAttributionsAccordionWorker:
-      getNewContainedExternalAttributionsAccordionWorker(),
+    AccordionWorker: getNewContainedExternalAttributionsAccordionWorker(),
     containedManualAttributionsAccordionWorker:
       getNewContainedManualAttributionsAccordionWorker(),
   };

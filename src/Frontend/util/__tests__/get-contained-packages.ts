@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-  AttributionIdWithCount,
+  AggregatedData,
   Attributions,
   ResourcesToAttributions,
 } from '../../../shared/shared-types';
@@ -30,7 +30,7 @@ describe('computeAggregatedAttributionsFromChildren', () => {
     .add('samplepath2/subfolder/subsubfolder');
 
   it('selects aggregated children and sorts correctly', () => {
-    const expectedResult: Array<AttributionIdWithCount> = [
+    const expectedResult: Array<AggregatedData> = [
       {
         childrenWithAttributionCount: 2,
         attributionId: 'uuid_2',
@@ -45,7 +45,7 @@ describe('computeAggregatedAttributionsFromChildren', () => {
       },
     ];
 
-    const result: Array<AttributionIdWithCount> =
+    const result: Array<AggregatedData> =
       computeAggregatedAttributionsFromChildren(
         testAttributions,
         testResourcesToAttributions,
@@ -55,7 +55,7 @@ describe('computeAggregatedAttributionsFromChildren', () => {
   });
 
   it('filters resolved attributions correctly', () => {
-    const expectedResult: Array<AttributionIdWithCount> = [
+    const expectedResult: Array<AggregatedData> = [
       {
         childrenWithAttributionCount: 2,
         attributionId: 'uuid_2',
@@ -69,7 +69,7 @@ describe('computeAggregatedAttributionsFromChildren', () => {
     const testResolvedExternalAttributions = new Set<string>();
     testResolvedExternalAttributions.add('uuid_1');
 
-    const result: Array<AttributionIdWithCount> =
+    const result: Array<AggregatedData> =
       computeAggregatedAttributionsFromChildren(
         testAttributions,
         testResourcesToAttributions,
@@ -82,7 +82,7 @@ describe('computeAggregatedAttributionsFromChildren', () => {
 
 describe('sortByCountAndPackageName', () => {
   it('sorts items correctly', () => {
-    const initialAttributionIdsWithCount: Array<AttributionIdWithCount> = [
+    const initialAttributionIdsWithCount: Array<AggregatedData> = [
       {
         attributionId: 'uuid1',
         childrenWithAttributionCount: 10,
@@ -126,7 +126,7 @@ describe('sortByCountAndPackageName', () => {
         packageName: 'd',
       },
     };
-    const expectedAttributionIdsWithCount: Array<AttributionIdWithCount> = [
+    const expectedAttributionIdsWithCount: Array<AggregatedData> = [
       {
         attributionId: 'uuid2',
         childrenWithAttributionCount: 11,

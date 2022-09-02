@@ -7,7 +7,7 @@ import MuiBox from '@mui/material/Box';
 import React, { ReactElement } from 'react';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import {
-  AttributionIdWithCount,
+  AggregatedData,
   Attributions,
   PackageInfo,
 } from '../../../shared/shared-types';
@@ -41,7 +41,7 @@ const classes = {
 };
 
 interface PackagePanelProps {
-  attributionIdsWithCount: Array<AttributionIdWithCount>;
+  attributionIdsWithCount: Array<AggregatedData>;
   title: PackagePanelTitle;
   attributions: Attributions;
   isAddToPackageEnabled: boolean;

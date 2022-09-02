@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-  AttributionIdWithCount,
+  AggregatedData,
   Attributions,
   ExternalAttributionSources,
   Source,
@@ -12,12 +12,12 @@ import {
 
 export function getSortedSources(
   attributions: Attributions,
-  attributionIdsWithCount: Array<AttributionIdWithCount>,
+  attributionIdsWithCount: Array<AggregatedData>,
   attributionSources: ExternalAttributionSources
 ): Array<string> {
   function reducer(
     sources: Set<string>,
-    attributionIdWithCount: AttributionIdWithCount
+    attributionIdWithCount: AggregatedData
   ): Set<string> {
     const source: Source | undefined =
       attributions[attributionIdWithCount.attributionId]?.source;
@@ -71,10 +71,10 @@ function sortSources(
 }
 
 export function getAttributionIdsWithCountForSource(
-  attributionIds: Array<AttributionIdWithCount>,
+  attributionIds: Array<AggregatedData>,
   attributions: Attributions,
   sourceName: string
-): Array<AttributionIdWithCount> {
+): Array<AggregatedData> {
   return attributionIds.filter((attributionIdWithCount) => {
     const source: Source | undefined =
       attributions[attributionIdWithCount.attributionId]?.source;

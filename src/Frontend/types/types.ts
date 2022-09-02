@@ -8,7 +8,7 @@ import { PackagePanelTitle, PopupType } from '../enums/enums';
 import { ResourceState } from '../state/reducers/resource-reducer';
 import { ViewState } from '../state/reducers/view-reducer';
 import {
-  AttributionIdWithCount,
+  AggregatedData,
   Attributions,
   Criticality,
   PackageInfo,
@@ -88,14 +88,13 @@ export interface ButtonConfig {
 }
 
 export interface PanelData {
-  title: PackagePanelTitle;
-  attributionIdsWithCount: Array<AttributionIdWithCount>;
+  aggregatedData: Array<AggregatedData>;
   attributions: Attributions;
 }
 
 export interface AttributionIdsWithCountAndResourceId {
   resourceId: string;
-  attributionIdsWithCount: Array<AttributionIdWithCount>;
+  attributionIdsWithCount: Array<AggregatedData>;
 }
 
 export interface FolderProgressBarDataAndResourceId {
