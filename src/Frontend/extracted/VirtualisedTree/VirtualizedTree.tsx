@@ -55,6 +55,7 @@ export function VirtualizedTree(
   props: VirtualizedTreeProps
 ): ReactElement | null {
   // eslint-disable-next-line testing-library/render-result-naming-convention
+  console.time('getTreeNodeProps');
   const treeNodeProps: Array<VirtualizedTreeNodeData> = getTreeNodeProps(
     props.nodes,
     '',
@@ -66,6 +67,7 @@ export function VirtualizedTree(
     props.getTreeNodeLabel,
     props.cardHeight
   );
+  console.timeEnd('getTreeNodeProps');
 
   const maxListLength: NumberOfDisplayedNodesForTree | HeightForTree =
     props.maxHeight

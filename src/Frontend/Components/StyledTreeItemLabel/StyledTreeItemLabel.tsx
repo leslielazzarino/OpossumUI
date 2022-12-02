@@ -72,18 +72,18 @@ const classes = {
   tooltip: tooltipStyle,
 };
 
-interface StyledTreeItemProps {
-  labelText: string;
-  hasManualAttribution: boolean;
-  hasExternalAttribution: boolean;
-  hasUnresolvedExternalAttribution: boolean;
-  hasParentWithManualAttribution: boolean;
-  containsExternalAttribution: boolean;
-  containsManualAttribution: boolean;
-  canHaveChildren: boolean;
-  isAttributionBreakpoint: boolean;
-  showFolderIcon: boolean;
-  containsResourcesWithOnlyExternalAttribution: boolean;
+export interface StyledTreeItemProps {
+  labelText?: string;
+  hasManualAttribution?: boolean;
+  hasExternalAttribution?: boolean;
+  hasUnresolvedExternalAttribution?: boolean;
+  hasParentWithManualAttribution?: boolean;
+  containsExternalAttribution?: boolean;
+  containsManualAttribution?: boolean;
+  canHaveChildren?: boolean;
+  isAttributionBreakpoint?: boolean;
+  showFolderIcon?: boolean;
+  containsResourcesWithOnlyExternalAttribution?: boolean;
   criticality?: Criticality;
 }
 

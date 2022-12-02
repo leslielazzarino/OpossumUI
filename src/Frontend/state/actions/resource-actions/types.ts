@@ -15,6 +15,7 @@ import {
   ResourcesToAttributions,
 } from '../../../../shared/shared-types';
 import { PanelPackage } from '../../../types/types';
+import { StyledTreeItemProps } from '../../../Components/StyledTreeItemLabel/StyledTreeItemLabel';
 
 export const ACTION_SET_SELECTED_ATTRIBUTION_ID =
   'ACTION_SET_SELECTED_ATTRIBUTION_ID';
@@ -25,6 +26,8 @@ export const ACTION_SET_MANUAL_ATTRIBUTION_DATA =
 export const ACTION_SET_EXTERNAL_ATTRIBUTION_DATA =
   'ACTION_SET_EXTERNAL_ATTRIBUTION_DATA';
 export const ACTION_SET_FREQUENT_LICENSES = 'ACTION_SET_FREQUENT_LICENSES';
+export const ACTION_SET_TREE_ITEM_LABEL_PROPS =
+  'ACTION_SET_TREE_ITEM_LABEL_PROPS';
 export const ACTION_SET_PROGRESS_BAR_DATA = 'ACTION_SET_PROGRESS_BAR_DATA';
 export const ACTION_SET_TEMPORARY_PACKAGE_INFO =
   'ACTION_SET_TEMPORARY_PACKAGE_INFO';
@@ -108,7 +111,8 @@ export type ResourceAction =
   | SetExternalAttributionSources
   | SetMultiSelectSelectedAttributionIds
   | ToggleAccordionSearchField
-  | SetPackageSearchTerm;
+  | SetPackageSearchTerm
+  | SetTreeItemLabelProps;
 
 export interface ResetResourceStateAction {
   type: typeof ACTION_RESET_RESOURCE_STATE;
@@ -133,6 +137,15 @@ export interface SetFrequentLicensesAction {
   type: typeof ACTION_SET_FREQUENT_LICENSES;
   payload: FrequentLicenses;
 }
+
+export interface SetTreeItemLabelProps {
+  type: typeof ACTION_SET_TREE_ITEM_LABEL_PROPS;
+  payload: ResourceIDsToStyledTreeItemProps;
+}
+
+export type ResourceIDsToStyledTreeItemProps = {
+  [resourceID: string]: StyledTreeItemProps;
+};
 
 export interface SetProgressBarDataPayload {
   resources: Resources;

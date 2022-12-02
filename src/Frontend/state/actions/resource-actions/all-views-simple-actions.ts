@@ -27,7 +27,9 @@ import {
   ACTION_SET_PROJECT_METADATA,
   ACTION_SET_RESOURCES,
   ACTION_SET_TEMPORARY_PACKAGE_INFO,
+  ACTION_SET_TREE_ITEM_LABEL_PROPS,
   ResetResourceStateAction,
+  ResourceIDsToStyledTreeItemProps,
   SetAttributionBreakpoints,
   SetBaseUrlsForSources,
   SetExternalAttributionSources,
@@ -39,6 +41,7 @@ import {
   SetProjectMetadata,
   SetResourcesAction,
   SetTemporaryPackageInfoAction,
+  SetTreeItemLabelProps,
 } from './types';
 
 export function resetResourceState(): ResetResourceStateAction {
@@ -79,6 +82,15 @@ export function setFrequentLicenses(
   licenses: FrequentLicenses
 ): SetFrequentLicensesAction {
   return { type: ACTION_SET_FREQUENT_LICENSES, payload: licenses };
+}
+
+export function setTreeItemLabelProps(
+  resourceIDsToStyledTreeItemProps: ResourceIDsToStyledTreeItemProps
+): SetTreeItemLabelProps {
+  return {
+    type: ACTION_SET_TREE_ITEM_LABEL_PROPS,
+    payload: resourceIDsToStyledTreeItemProps,
+  };
 }
 
 export function setProgressBarData(

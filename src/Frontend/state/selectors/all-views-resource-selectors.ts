@@ -19,17 +19,23 @@ import {
 } from '../../../shared/shared-types';
 import { View } from '../../enums/enums';
 import { ProgressBarData, State } from '../../types/types';
-import { getSelectedView } from './view-selector';
+import { getPopupAttributionId, getSelectedView } from './view-selector';
 import { getStrippedPackageInfo } from '../../util/get-stripped-package-info';
 import {
   getAttributionIdOfDisplayedPackageInManualPanel,
   getAttributionOfDisplayedPackageInManualPanel,
 } from './audit-view-resource-selectors';
 import { getSelectedAttributionId } from './attribution-view-resource-selectors';
-import { getPopupAttributionId } from '../../state/selectors/view-selector';
+import { ResourceIDsToStyledTreeItemProps } from '../actions/resource-actions/types';
 
 export function getResources(state: State): Resources | null {
   return state.resourceState.allViews.resources;
+}
+
+export function getResourceIDsToStyledTreeItemProps(
+  state: State
+): ResourceIDsToStyledTreeItemProps {
+  return state.resourceState.allViews.resourceIDsToStyledTreeItemProps;
 }
 
 export function getManualData(state: State): AttributionData {

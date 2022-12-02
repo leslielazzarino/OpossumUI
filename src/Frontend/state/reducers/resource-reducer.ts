@@ -56,6 +56,8 @@ import {
   ACTION_TOGGLE_ACCORDION_SEARCH_FIELD,
   ACTION_SET_PACKAGE_SEARCH_TERM,
   ResourceAction,
+  ACTION_SET_TREE_ITEM_LABEL_PROPS,
+  ResourceIDsToStyledTreeItemProps,
 } from '../actions/resource-actions/types';
 import {
   createManualAttribution,
@@ -78,6 +80,7 @@ import { getFileWithChildrenCheckForResourceState } from '../../util/is-file-wit
 export const initialResourceState: ResourceState = {
   allViews: {
     resources: null,
+    resourceIDsToStyledTreeItemProps: {},
     manualData: EMPTY_ATTRIBUTION_DATA,
     externalData: EMPTY_ATTRIBUTION_DATA,
     frequentLicenses: EMPTY_FREQUENT_LICENSES,
@@ -116,6 +119,7 @@ export const initialResourceState: ResourceState = {
 export type ResourceState = {
   allViews: {
     resources: Resources | null;
+    resourceIDsToStyledTreeItemProps: ResourceIDsToStyledTreeItemProps;
     manualData: AttributionData;
     externalData: AttributionData;
     frequentLicenses: FrequentLicenses;
@@ -697,6 +701,14 @@ export const resourceState = (
             ...state.auditView.accordionSearchField,
             searchTerm: action.payload,
           },
+        },
+      };
+    case ACTION_SET_TREE_ITEM_LABEL_PROPS:
+      return {
+        ...state,
+        allViews: {
+          ...state.allViews,
+          resourceIDsToStyledTreeItemProps: action.payload,
         },
       };
     default:

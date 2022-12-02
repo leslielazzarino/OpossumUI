@@ -13,10 +13,88 @@ import {
 } from '../../../shared/shared-types';
 import { PathPredicate } from '../../types/types';
 import React, { ReactElement } from 'react';
-import { StyledTreeItemLabel } from '../StyledTreeItemLabel/StyledTreeItemLabel';
+import {
+  StyledTreeItemLabel,
+  StyledTreeItemProps,
+} from '../StyledTreeItemLabel/StyledTreeItemLabel';
 import { getClosestParentAttributions } from '../../util/get-closest-parent-attributions';
+import { ResourceIDsToStyledTreeItemProps } from '../../state/actions/resource-actions/types';
+import { canResourceHaveChildren } from '../../util/can-resource-have-children';
+import { identity, pickBy } from 'lodash';
+
+export function getTreeItemLabelPropsForAll(
+  resources: Resources,
+  resourcesToManualAttributions: ResourcesToAttributions,
+  manualAttributions: Attributions,
+  resourcesWithManualAttributedChildren: ResourcesWithAttributedChildren,
+  resolvedExternalAttributions: Set<string>,
+  isAttributionBreakpoint: PathPredicate,
+  isFileWithChildren: PathPredicate,
+  externalData: AttributionData
+): ResourceIDsToStyledTreeItemProps {
+  const resourceIDsToStyledTreeItemProps: ResourceIDsToStyledTreeItemProps = {};
+  const resourceIdsWithResources: Array<[string, Resources | 1]> =
+    getResourceIdsWithResources({ '': resources });
+
+  for (const resourceIdWithResources of resourceIdsWithResources) {
+    resourceIDsToStyledTreeItemProps[resourceIdWithResources[0]] =
+      getTreeItemLabelProps(
+        '',
+        resourceIdWithResources[1],
+        resourceIdWithResources[0],
+        resourcesToManualAttributions,
+        externalData.resourcesToAttributions,
+        manualAttributions,
+        externalData.resourcesWithAttributedChildren,
+        resourcesWithManualAttributedChildren,
+        resolvedExternalAttributions,
+        isAttributionBreakpoint,
+        isFileWithChildren,
+        externalData
+      );
+  }
+
+  return resourceIDsToStyledTreeItemProps;
+}
+
+function getResourceIdsWithResources(
+  resources: Resources,
+  parentPath = '',
+  resourceIdsWithResources: Array<[string, Resources | 1]> = []
+): Array<[string, Resources | 1]> {
+  for (const resourceName of Object.keys(resources)) {
+    const resource: Resources | 1 = resources[resourceName];
+    const reasourceId = `${parentPath}${resourceName}${
+      canResourceHaveChildren(resource) ? '/' : ''
+    }`;
+    resourceIdsWithResources.push([reasourceId, resource]);
+
+    if (resource !== 1) {
+      getResourceIdsWithResources(
+        resource,
+        reasourceId,
+        resourceIdsWithResources
+      );
+    }
+  }
+
+  return resourceIdsWithResources;
+}
 
 export function getTreeItemLabel(
+  resourceName: string,
+  resourceId: string,
+  resourceIDsToStyledTreeItemProps: ResourceIDsToStyledTreeItemProps
+): ReactElement {
+  return (
+    <StyledTreeItemLabel
+      {...resourceIDsToStyledTreeItemProps[resourceId]}
+      labelText={getDisplayName(resourceName)}
+    />
+  );
+}
+
+export function getTreeItemLabelProps(
   resourceName: string,
   resource: Resources | 1,
   nodeId: string,
@@ -29,57 +107,57 @@ export function getTreeItemLabel(
   isAttributionBreakpoint: PathPredicate,
   isFileWithChildren: PathPredicate,
   externalData: AttributionData
-): ReactElement {
+): StyledTreeItemProps {
   const canHaveChildren = resource !== 1;
 
-  return (
-    <StyledTreeItemLabel
-      labelText={getDisplayName(resourceName)}
-      canHaveChildren={canHaveChildren}
-      hasManualAttribution={hasManualAttribution(
+  return pickBy(
+    {
+      canHaveChildren,
+      hasManualAttribution: hasManualAttribution(
         nodeId,
         resourcesToManualAttributions
-      )}
-      hasExternalAttribution={hasExternalAttribution(
+      ),
+      hasExternalAttribution: hasExternalAttribution(
         nodeId,
         resourcesToExternalAttributions
-      )}
-      hasUnresolvedExternalAttribution={hasUnresolvedExternalAttribution(
+      ),
+      hasUnresolvedExternalAttribution: hasUnresolvedExternalAttribution(
         nodeId,
         resourcesToExternalAttributions,
         resolvedExternalAttributions
-      )}
-      hasParentWithManualAttribution={hasParentWithManualAttributionAndNoOwnAttribution(
-        nodeId,
-        manualAttributions,
-        resourcesToManualAttributions,
-        isAttributionBreakpoint
-      )}
-      containsExternalAttribution={containsExternalAttribution(
+      ),
+      hasParentWithManualAttribution:
+        hasParentWithManualAttributionAndNoOwnAttribution(
+          nodeId,
+          manualAttributions,
+          resourcesToManualAttributions,
+          isAttributionBreakpoint
+        ),
+      containsExternalAttribution: containsExternalAttribution(
         nodeId,
         resourcesWithExternalAttributedChildren
-      )}
-      containsManualAttribution={containsManualAttribution(
+      ),
+      containsManualAttribution: containsManualAttribution(
         nodeId,
         resourcesWithManualAttributedChildren
-      )}
-      criticality={getCriticality(
+      ),
+      criticality: getCriticality(
         nodeId,
         resourcesToExternalAttributions,
         externalData.attributions
-      )}
-      isAttributionBreakpoint={isAttributionBreakpoint(nodeId)}
-      showFolderIcon={canHaveChildren && !isFileWithChildren(nodeId)}
-      containsResourcesWithOnlyExternalAttribution={
+      ),
+      isAttributionBreakpoint: isAttributionBreakpoint(nodeId),
+      showFolderIcon: canHaveChildren && !isFileWithChildren(nodeId),
+      containsResourcesWithOnlyExternalAttribution:
         canHaveChildren &&
         containsResourcesWithOnlyExternalAttribution(
           nodeId,
           resourcesToManualAttributions,
           resourcesToExternalAttributions,
           resource
-        )
-      }
-    />
+        ),
+    },
+    identity
   );
 }
 

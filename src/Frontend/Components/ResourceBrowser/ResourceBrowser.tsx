@@ -7,24 +7,16 @@ import remove from 'lodash/remove';
 import React, { ReactElement } from 'react';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import {
-  getAttributionBreakpoints,
-  getExternalData,
   getFilesWithChildren,
-  getManualAttributions,
+  getResourceIDsToStyledTreeItemProps,
   getResources,
-  getResourcesToExternalAttributions,
-  getResourcesToManualAttributions,
-  getResourcesWithExternalAttributedChildren,
-  getResourcesWithManualAttributedChildren,
 } from '../../state/selectors/all-views-resource-selectors';
 import { setSelectedResourceIdOrOpenUnsavedPopup } from '../../state/actions/popup-actions/popup-actions';
 import { setExpandedIds } from '../../state/actions/resource-actions/audit-view-simple-actions';
 import {
   getExpandedIds,
-  getResolvedExternalAttributions,
   getSelectedResourceId,
 } from '../../state/selectors/audit-view-resource-selectors';
-import { getAttributionBreakpointCheck } from '../../util/is-attribution-breakpoint';
 import { getFileWithChildrenCheck } from '../../util/is-file-with-children';
 import { VirtualizedTree } from '../../extracted/VirtualisedTree/VirtualizedTree';
 import { Resources } from '../../../shared/shared-types';
@@ -82,27 +74,10 @@ export function ResourceBrowser(): ReactElement | null {
   const selectedResourceId = useAppSelector(getSelectedResourceId);
   const expandedIds = useAppSelector(getExpandedIds);
 
-  const manualAttributions = useAppSelector(getManualAttributions);
-  const resourcesToManualAttributions = useAppSelector(
-    getResourcesToManualAttributions
+  const resourceIDsToStyledTreeItemProps = useAppSelector(
+    getResourceIDsToStyledTreeItemProps
   );
-  const resourcesWithManualAttributedChildren = useAppSelector(
-    getResourcesWithManualAttributedChildren
-  );
-
-  const resourcesToExternalAttributions = useAppSelector(
-    getResourcesToExternalAttributions
-  );
-  const resourcesWithExternalAttributedChildren = useAppSelector(
-    getResourcesWithExternalAttributedChildren
-  );
-  const resolvedExternalAttributions = useAppSelector(
-    getResolvedExternalAttributions
-  );
-
-  const attributionBreakpoints = useAppSelector(getAttributionBreakpoints);
   const filesWithChildren = useAppSelector(getFilesWithChildren);
-  const externalData = useAppSelector(getExternalData);
   const dispatch = useAppDispatch();
 
   function handleToggle(nodeIdsToExpand: Array<string>): void {
@@ -130,25 +105,13 @@ export function ResourceBrowser(): ReactElement | null {
       resource: Resources | 1,
       nodeId: string
     ): ReactElement =>
-      getTreeItemLabel(
-        resourceName,
-        resource,
-        nodeId,
-        resourcesToManualAttributions,
-        resourcesToExternalAttributions,
-        manualAttributions,
-        resourcesWithExternalAttributedChildren,
-        resourcesWithManualAttributedChildren,
-        resolvedExternalAttributions,
-        getAttributionBreakpointCheck(attributionBreakpoints),
-        getFileWithChildrenCheck(filesWithChildren),
-        externalData
-      );
+      getTreeItemLabel(resourceName, nodeId, resourceIDsToStyledTreeItemProps);
   }
 
   const maxTreeHeight: number = useWindowHeight() - topBarHeight - 4;
 
-  return resources ? (
+  console.time('Tree render');
+  const tree = resources ? (
     <VirtualizedTree
       expandedIds={expandedIds}
       isFakeNonExpandableNode={getFileWithChildrenCheck(filesWithChildren)}
@@ -170,4 +133,7 @@ export function ResourceBrowser(): ReactElement | null {
       }}
     />
   ) : null;
+  console.timeEnd('Tree render');
+
+  return tree;
 }
