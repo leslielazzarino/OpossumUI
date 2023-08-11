@@ -46,7 +46,7 @@ import {
   parseOutputJsonFile,
 } from './parseFile';
 import { isOpossumFileFormat } from '../utils/isOpossumFileFormat';
-import { writeOutputJsonToOpossumFile } from '../output/writeJsonToOpossumFile';
+import { writeOutputJsonToOpossumFileWithFflate } from '../output/writeJsonToOpossumFile';
 import { setLoadingState } from '../main/listeners';
 
 function isJsonParsingError(object: unknown): object is JsonParsingError {
@@ -213,8 +213,8 @@ async function createOutputInOpossumFile(
     resourcesToExternalAttributions,
     projectId,
   );
-  await writeOutputJsonToOpossumFile(filePath, attributionJSON);
-  log.info('... Successfully wrote output in .opssum file.');
+  writeOutputJsonToOpossumFileWithFflate(filePath, attributionJSON);
+  log.info('... Successfully wrote output in .opossum file.');
 
   log.info(`Starting to parse output file in ${filePath} ...`);
   const parsingResult = (await parseOpossumFile(
