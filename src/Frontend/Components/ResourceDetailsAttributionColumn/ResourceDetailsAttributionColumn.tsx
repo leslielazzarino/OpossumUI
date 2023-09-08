@@ -155,6 +155,7 @@ export function ResourceDetailsAttributionColumn(
   const manualAttributionsOfBreakpointSelected =
     displayedPackage?.panel === PackagePanelTitle.ManualPackages &&
     selectedResourceIsAttributionBreakpoint;
+  console.log('Attribution column: ', Date.now());
 
   return selectedResourceId &&
     displayedPackage &&

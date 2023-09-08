@@ -35,6 +35,7 @@ export function SyncAccordionPanel(
     sortedPackageCardIds,
     displayPackageInfosWithCount,
   };
+  console.log(props.title, Date.now());
 
   return (
     <AccordionPanel

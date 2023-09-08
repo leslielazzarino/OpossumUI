@@ -90,6 +90,7 @@ export function AggregatedAttributionsPanel(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedResourceId, manualData.resourcesToAttributions],
   );
+  console.log('Aggregated attribution panel: ', Date.now());
 
   return (
     <>

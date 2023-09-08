@@ -81,6 +81,7 @@ export function ResourceBrowser(): ReactElement | null {
     event: React.ChangeEvent<unknown>,
     nodeId: string,
   ): void {
+    console.log('Starting time: ', new Date().getTime());
     dispatch(setSelectedResourceIdOrOpenUnsavedPopup(nodeId));
   }
 

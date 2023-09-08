@@ -105,6 +105,7 @@ export function WorkerAccordionPanel(
       displayPackageInfosWithCount: {},
     };
   }
+  console.log(props.title, Date.now());
 
   return (
     <AccordionPanel

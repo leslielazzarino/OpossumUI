@@ -58,7 +58,7 @@ export function ButtonRow(props: ButtonRowProps): ReactElement {
   const marginForNeedsReviewCheckbox = props.addMarginForNeedsReviewCheckbox
     ? classes.checkboxForPopUp
     : {};
-
+  console.log('Done: ', Date.now());
   return (
     <MuiBox sx={classes.root}>
       {props.displayTexts.map((text, index) => (
